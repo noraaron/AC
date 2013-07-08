@@ -1,3 +1,5 @@
+package craft.aaron.aaroncoins;
+
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -9,15 +11,14 @@ import org.bukkit.entity.Player;
 public class AaronCoinsCommandExecutor implements CommandExecutor
 {
 	
-    //TODO Add more commands here.
     public static final String[][] COMMANDS_LIST_DESCRIPTIONS =
     	{
     		{"/aaroncoins", "Root command"},
     		{"/aaroncoins balance", "Returns how many AaaronCoins you have"},
     		{"/aaroncoins give <playername> <number>", "Gives some AaronCoins to selected player"},
-    		{"/aaroncoins remove <playername> <number>", "Removes some AaronCoins from selected player"}
+    		{"/aaroncoins remove <playername> <number>", "Removes some AaronCoins from selected player"},
+    		{"/aaroncoins help", "Lists all commands and their descriptions."}
     	};
-    
     
     private AaronCoinsPlugin plugin;
     
@@ -38,17 +39,16 @@ public class AaronCoinsCommandExecutor implements CommandExecutor
 	         {
 	        	 if(args.length < 1)
 	        	 {
-	        		 //TODO Send them to help
 	        		 player.sendMessage(buildHelpList());
 	        	 }
 	        	 
 	        	 else if(args[0].equalsIgnoreCase("balance"))
 	        	 {
-	        		 Long coins = AaronCoinsPlugin.playerCoins.get(player);
+	        		 Long coins = AaronCoinsPlugin.playerCoins.get(player.getUniqueId());
 	        		 
 	        		 if(coins == null)
 	        		 {
-	        			 AaronCoinsPlugin.playerCoins.put(player, AaronCoinsPlugin.DEFAULT_COIN_HANDOUT);
+	        			 AaronCoinsPlugin.playerCoins.put(player.getUniqueId(), AaronCoinsPlugin.DEFAULT_COIN_HANDOUT);
 	        			 player.sendMessage(ChatColor.GREEN + "You have: " + 10000 + "AaronCoins!");
 	        		 }
 	        		 
@@ -145,30 +145,30 @@ public class AaronCoinsCommandExecutor implements CommandExecutor
 			{
 				Player p = player.getPlayer();
 				
-				if(AaronCoinsPlugin.playerCoins.contains(p))
+				if(AaronCoinsPlugin.playerCoins.contains(p.getUniqueId()))
 				{
-					Long prevBalance = AaronCoinsPlugin.playerCoins.get(p);
+					Long prevBalance = AaronCoinsPlugin.playerCoins.get(p.getUniqueId());
 					
 					//max value people, like operators
 					if(prevBalance < Long.MAX_VALUE && (prevBalance + coins) <= Long.MAX_VALUE)
 					{
-						AaronCoinsPlugin.playerCoins.remove(p);
-						AaronCoinsPlugin.playerCoins.put(p, prevBalance + coins);
+						AaronCoinsPlugin.playerCoins.remove(p.getUniqueId());
+						AaronCoinsPlugin.playerCoins.put(p.getUniqueId(), prevBalance + coins);
 					}
 					
 					else if(coins < 0) //remove case
 					{
 						if((prevBalance - coins) < 0)
 						{
-							AaronCoinsPlugin.playerCoins.remove(p);
-							AaronCoinsPlugin.playerCoins.put(p, 0L);
+							AaronCoinsPlugin.playerCoins.remove(p.getUniqueId());
+							AaronCoinsPlugin.playerCoins.put(p.getUniqueId(), 0L);
 						}
 					}
 					
 					else if(coins > 0) //add case
 					{
-						AaronCoinsPlugin.playerCoins.remove(p);
-						AaronCoinsPlugin.playerCoins.put(p, Long.MAX_VALUE);
+						AaronCoinsPlugin.playerCoins.remove(p.getUniqueId());
+						AaronCoinsPlugin.playerCoins.put(p.getUniqueId(), Long.MAX_VALUE);
 					}
 
 				}
@@ -176,7 +176,7 @@ public class AaronCoinsCommandExecutor implements CommandExecutor
 				else
 				{
 					//in case some player is not in the account list, add them
-					AaronCoinsPlugin.playerCoins.put(p, AaronCoinsPlugin.DEFAULT_COIN_HANDOUT + coins);
+					AaronCoinsPlugin.playerCoins.put(p.getUniqueId(), AaronCoinsPlugin.DEFAULT_COIN_HANDOUT + coins);
 				}
 			}
 		}

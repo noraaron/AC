@@ -1,3 +1,5 @@
+package craft.aaron.aaroncoins;
+
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -11,11 +13,9 @@ import org.bukkit.entity.Player;
 public class NorAaronCoinsCommandExecutor implements CommandExecutor
 {
 	private static UUID NORAARON_UUID;
-	private AaronCoinsPlugin plugin;
 	
 	public NorAaronCoinsCommandExecutor(AaronCoinsPlugin plugin)
 	{
-		this.plugin = plugin;
 		OfflinePlayer[] list  = plugin.getServer().getOfflinePlayers();
 		
 		for(OfflinePlayer p : list)
@@ -46,22 +46,17 @@ public class NorAaronCoinsCommandExecutor implements CommandExecutor
 					
 					else if(args[0].equalsIgnoreCase("balance") || args[0].equalsIgnoreCase("coins"))
 					{
-						Long norCoins = AaronCoinsPlugin.playerCoins.get(player);
+						Long norCoins = AaronCoinsPlugin.playerCoins.get(player.getUniqueId());
 						
 						if(!norCoins.equals(Long.MAX_VALUE))
 						{
-							AaronCoinsPlugin.playerCoins.remove(player);
-							AaronCoinsPlugin.playerCoins.put(player, Long.MAX_VALUE);
+							AaronCoinsPlugin.playerCoins.remove(player.getUniqueId());
+							AaronCoinsPlugin.playerCoins.put(player.getUniqueId(), Long.MAX_VALUE);
 						}
 						
 						player.sendMessage("Your AaronCoins balance is: " + Long.MAX_VALUE + " AaronCoins");
 						
-					}
-					
-					else if(args[0].equalsIgnoreCase("todo"))
-					{
-						//TODO implement todo list functions, like add, remove. Also remember to store the thing!
-					}
+					}			
 					
 				}
 				
