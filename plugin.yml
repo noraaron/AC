@@ -1,0 +1,46 @@
+name: AaronCoins
+version: 0.2
+author: collielimabean (github.com/collielimabean)
+main: craft.aaron.aaroncoins.AaronCoinsPlugin
+
+commands:
+  aaroncoins:
+    description: Currency on NorAaron's server.
+    permission: aaroncoins.*
+   
+  noraaron:
+    description: NorAaron's personal command
+    
+permissions:
+  aaroncoins.*:
+    description: Grants access to all AaronCoins commands.
+    children:
+      aaroncoins.balance: true
+      aaroncoins.give: true
+      aaroncoins.remove: true
+      aaroncoins.help: true
+    aaroncoins.balance:
+      description: Gets the player's balance.
+      default: true
+    aaroncoins.give:
+      description: Gives selected player some AaronCoins.
+      default: op
+    aaroncoins.remove:
+      description: Removes some AaronCoins from selected player.
+      default: op
+    aaroncoins.help:
+      description: Lists all commands and descriptions.
+      default: true
+  
+  noaaroncoins.*:
+    description: Grants access to all NorAaronCoins commands.
+    children:
+      noraaroncoins.balance: true
+      noraaroncoins.coins: true
+    noraaroncoins.balance:
+      description: Gets NorAaron1's balance.
+      default: true
+    noraaroncoins.coins:
+      description: Gets NorAaron1's balance.
+      default: true
+    
