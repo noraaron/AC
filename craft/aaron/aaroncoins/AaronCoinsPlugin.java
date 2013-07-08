@@ -52,7 +52,7 @@ public class AaronCoinsPlugin extends JavaPlugin
     	if(!save.exists() || !save.isDirectory())
     	{
     		getLogger().info("Could not find account balances, creating directory AaronCoinsAccounts...");
-    		boolean success = save.mkdir();
+    		boolean success = save.mkdirs();
     		
     		if(success)
     		{
@@ -72,7 +72,7 @@ public class AaronCoinsPlugin extends JavaPlugin
     	else
     	{
     		
-    		File store = new File(accountDirectory + "/accounts.ser");
+    		File store = new File(accountDirectory + "/Aaronaccounts.ser");
     		
     		//check if anything in directory to deserialize
     		if(store.exists())
@@ -83,6 +83,7 @@ public class AaronCoinsPlugin extends JavaPlugin
     			try 
     			{
 					playerCoins = rf.getAccounts();
+					getLogger().info("Retrieval successful.");
 				} 
     			
     			catch (ClassNotFoundException e) 
@@ -107,6 +108,7 @@ public class AaronCoinsPlugin extends JavaPlugin
     	}
     	
     	exe = new AaronCoinsCommandExecutor(this);
+    	nexe = new NorAaronCoinsCommandExecutor(this);
 		this.getCommand("aaroncoins").setExecutor(exe);
 		this.getCommand("noraaron").setExecutor(nexe);
     }

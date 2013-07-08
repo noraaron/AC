@@ -1,7 +1,6 @@
 name: AaronCoins
-version: 0.1
+version: 0.2
 author: collielimabean (github.com/collielimabean)
-authors: NorAaron1 (github.com/noraaron)
 main: craft.aaron.aaroncoins.AaronCoinsPlugin
 
 commands:

@@ -49,12 +49,12 @@ public class AaronCoinsCommandExecutor implements CommandExecutor
 	        		 if(coins == null)
 	        		 {
 	        			 AaronCoinsPlugin.playerCoins.put(player.getUniqueId(), AaronCoinsPlugin.DEFAULT_COIN_HANDOUT);
-	        			 player.sendMessage(ChatColor.GREEN + "You have: " + 10000 + "AaronCoins!");
+	        			 player.sendMessage(ChatColor.GREEN + "You have: " + 10000 + " AaronCoins!");
 	        		 }
 	        		 
 	        		 else
 	        		 {
-		        		 player.sendMessage(ChatColor.GREEN + "You have: " + coins + "AaronCoins!");
+		        		 player.sendMessage(ChatColor.GREEN + "You have: " + coins + " AaronCoins!");
 	        		 }
 
 	        	 }
@@ -91,23 +91,33 @@ public class AaronCoinsCommandExecutor implements CommandExecutor
 	        	 
 	        	 else if(args[0].equalsIgnoreCase("remove"))
 	        	 {
-        			 String playerName = args[1];
-        			 Long input = Long.parseLong(args[2]);
-        			 
-        			 if(input > 0)
-        			 {
-        				 player.sendMessage("Please use the " + COMMANDS_LIST_DESCRIPTIONS[2][0] + " command.");
-        			 }
-        			 
-        			 else if(input < Long.MIN_VALUE)
-        			 {
-        				 player.sendMessage("Enter a smaller value please.");
-        			 }
-        			 
-        			 else
-        			 {
-        				 giveAaronCoins(playerName, input);
-        			 }
+	        		 
+	        		 if(args.length != 3)
+	        		 {
+	        			 player.sendMessage("Usage: " + COMMANDS_LIST_DESCRIPTIONS[3][0]);
+	        		 }
+	        		 
+	        		 else
+	        		 {
+	        			 String playerName = args[1];
+	        			 Long input = Long.parseLong(args[2]);
+	        			 	        			 
+	        			 if(input < 0)
+	        			 {
+	        				 player.sendMessage("Please use the " + COMMANDS_LIST_DESCRIPTIONS[2][0] + " command.");
+	        			 }
+	        			 
+	        			 else if(input < Long.MIN_VALUE)
+	        			 {
+	        				 player.sendMessage("Enter a larger value please.");
+	        			 }
+	        			 
+	        			 else
+	        			 {
+	        				 giveAaronCoins(playerName, -input);
+	        			 }
+	        		 }
+	        		 	        
 	        	 }
 	        	 
 	        	 else if(args[0].equalsIgnoreCase("help"))
@@ -149,27 +159,19 @@ public class AaronCoinsCommandExecutor implements CommandExecutor
 				{
 					Long prevBalance = AaronCoinsPlugin.playerCoins.get(p.getUniqueId());
 					
-					//max value people, like operators
-					if(prevBalance < Long.MAX_VALUE && (prevBalance + coins) <= Long.MAX_VALUE)
+					Long newCount = prevBalance + coins;
+					
+					if(newCount < 0)
 					{
-						AaronCoinsPlugin.playerCoins.remove(p.getUniqueId());
-						AaronCoinsPlugin.playerCoins.put(p.getUniqueId(), prevBalance + coins);
+						newCount = 0L;
 					}
 					
-					else if(coins < 0) //remove case
+					else if(newCount >= Long.MAX_VALUE)
 					{
-						if((prevBalance - coins) < 0)
-						{
-							AaronCoinsPlugin.playerCoins.remove(p.getUniqueId());
-							AaronCoinsPlugin.playerCoins.put(p.getUniqueId(), 0L);
-						}
+						newCount = Long.MAX_VALUE;
 					}
 					
-					else if(coins > 0) //add case
-					{
-						AaronCoinsPlugin.playerCoins.remove(p.getUniqueId());
-						AaronCoinsPlugin.playerCoins.put(p.getUniqueId(), Long.MAX_VALUE);
-					}
+					AaronCoinsPlugin.playerCoins.put(p.getUniqueId(), newCount);
 
 				}
 				
